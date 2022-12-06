@@ -3,7 +3,7 @@
   "config": {
     "connector.class": "com.mongodb.kafka.connect.MongoSourceConnector",
     "tasks.max": "1",
-    "connection.uri": "mongodb+srv://mongo:darshPass1@cluster0.7v3rapw.mongodb.net/?retryWrites=true&w=majority",
+    "connection.uri": "mongodb+srv://mongo:<password>@cluster0.7v3rapw.mongodb.net/?retryWrites=true&w=majority",
     "database": "business",
     "collection": "resto",
     "value.converter.schemas.enable": true,
