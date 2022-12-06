@@ -106,6 +106,7 @@ services:
       - schema-registry
     ports:
       - "8083:8083"
+    env_file: .env_kafka_connect
     environment:
       CONNECT_BOOTSTRAP_SERVERS: "broker0:19092,broker1:19093,broker2:19094"
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -166,40 +167,14 @@ services:
 
   postgres:
     # image: debezium/postgres:11
-    build: ./src_postgres
+    build: ./sink_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: postgres
       POSTGRES_DB: demo
-    command: postgres -c config_file=/home/config/src_postgres/postgresql.conf
+    command: postgres -c config_file=/home/config/sink_postgres/postgresql.conf
     ports:
       - 5432:5432
     volumes:
       - $PWD:/home/config
-
-  mongo1:
-    image: "mongo:4.0"
-    container_name: mongo1
-    command: --replSet rs0 --smallfiles --oplogSize 128
-    volumes:
-      - rs1:/data/db
-      - ./mongo/init.sh:/usr/local/bin/init.sh
-      - $PWD:/home/config
-    ports:
-      - "27017:27017"
-    restart: always
-
-  mongo2:
-    image: "mongo:4.0"
-    container_name: mongo2
-    command: --replSet rs0 --smallfiles --oplogSize 128
-    volumes:
-      - rs2:/data/db
-    ports:
-      - "27018:27017"
-    restart: always
-
-volumes:
-  rs1:
-  rs2:

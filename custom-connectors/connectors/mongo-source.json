@@ -1,19 +1,17 @@
 {
   "name": "mongo-source",
   "config": {
-    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
-    "mongodb.hosts": "mongo1:27017",
-    "mongodb.name": "demo",
-    "database.whitelist": "class",
-    "collection.whitelist": "class.courses",
+    "connector.class": "com.mongodb.kafka.connect.MongoSourceConnector",
     "tasks.max": "1",
+    "connection.uri": "mongodb+srv://mongo:darshPass1@cluster0.7v3rapw.mongodb.net/?retryWrites=true&w=majority",
+    "database": "business",
+    "collection": "resto",
     "value.converter.schemas.enable": true,
     "key.converter.schemas.enable": false,
-    "plugin.name": "wal2json",
-    "transforms": "mongoflatten",
-    "transforms.mongoflatten.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
-    "transforms.mongoflatten.drop.tombstones": false,
-    "transforms.mongoflatten.delete.handling.mode": "drop",
-    "transforms.mongoflatten.add.headers": "op"
+    "topic.prefix": "demo",
+    "copy.existing": "true",
+    "poll.await.time.ms": "1000",
+    "change.stream.full.document": "updateLookup",
+    "output.json.formatter": "com.mongodb.kafka.connect.source.json.formatter.ExtendedJson"
   }
 }
