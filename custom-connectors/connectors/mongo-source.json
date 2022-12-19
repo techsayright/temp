@@ -1,17 +1,23 @@
 {
   "name": "mongo-source",
   "config": {
-    "connector.class": "com.mongodb.kafka.connect.MongoSourceConnector",
+    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+    "mongodb.name": "demo",
+    "mongodb.ssl.enabled": true,
+    "mongodb.hosts": "mongodb://darsh:darshPass1@ac-18aowoy-shard-00-00.7v3rapw.mongodb.net:27017,ac-18aowoy-shard-00-01.7v3rapw.mongodb.net:27017,ac-18aowoy-shard-00-02.7v3rapw.mongodb.net:27017/?ssl=true&replicaSet=atlas-b3e5ag-shard-0&authSource=admin&retryWrites=true&w=majority",
+    "database.whitelist": "company",
+    "collection.whitelist": "company.users",
+    "mongodb.user": "mongo",
+    "mongodb.password": "darshPass1",
     "tasks.max": "1",
-    "connection.uri": "mongodb+srv://mongo:darshPass1@cluster0.7v3rapw.mongodb.net/?retryWrites=true&w=majority",
-    "database": "company",
-    "pipeline": "[   { $match: { \"ns.coll\": { \"$in\": [\"users\", \"roles\" ] } } } ]",
     "value.converter.schemas.enable": true,
     "key.converter.schemas.enable": false,
-    "topic.prefix": "demo",
-    "copy.existing": "true",
-    "poll.await.time.ms": "1000",
-    "change.stream.full.document": "updateLookup",
-    "output.json.formatter": "com.mongodb.kafka.connect.source.json.formatter.SimplifiedJson"
+    "plugin.name": "wal2json",
+    "transforms": "mongoflatten",
+    "transforms.mongoflatten.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
+    "transforms.mongoflatten.drop.tombstones": false,
+    "transforms.mongoflatten.delete.handling.mode": "drop",
+    "transforms.mongoflatten.add.headers": "op",
+    "database.history.kafka.bootstrap.servers": "broker0:19092,broker1:19093,broker2:19094"
   }
 }
